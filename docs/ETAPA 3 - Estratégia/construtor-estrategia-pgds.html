@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construtor de Estratégia PGDS - ETAPA 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .step-card.active {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .value-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .alignment-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                🎯 Construtor de Estratégia PGDS
+            </h1>
+            <p class="text-lg text-gray-600 mb-6">
+                Construa uma estratégia abrangente de gestão de dados para o seu Programa de Gestão de Dados e Sistemas
+            </p>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-3 mb-8">
+                <div id="progressBar" class="progress-bar bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full" style="width: 0%"></div>
+            </div>
+            <p id="progressText" class="text-sm text-gray-500">Progresso: 0 de 5 secções concluídas</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button onclick="showStep(1)" id="btn1" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold">1. Contexto</button>
+            <button onclick="showStep(2)" id="btn2" class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700">2. Alinhamento</button>
+            <button onclick="showStep(3)" id="btn3" class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700">3. Valor</button>
+            <button onclick="showStep(4)" id="btn4" class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700">4. Requisitos</button>
+            <button onclick="showStep(5)" id="btn5" class="px-4 py-2 rounded-lg bg-gray-300 text-gray-700">5. Plano Ação</button>
+        </div>
+
+        <!-- Step 1: Contexto Organizacional -->
+        <div id="step1" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 active">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                🏢 Passo 1: Contexto Organizacional
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Setor da Organização</label>
+                    <select id="setor" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Selecione o setor...</option>
+                        <option value="banca">Banca e Serviços Financeiros</option>
+                        <option value="saude">Saúde e Farmacêutica</option>
+                        <option value="telecom">Telecomunicações</option>
+                        <option value="retail">Retalho e E-commerce</option>
+                        <option value="governo">Setor Público/Governo</option>
+                        <option value="energia">Energia e Utilities</option>
+                        <option value="manufatura">Manufatura</option>
+                        <option value="educacao">Educação</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Dimensão da Organização</label>
+                    <select id="dimensao" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Selecione a dimensão...</option>
+                        <option value="pequena">Pequena (< 100 colaboradores)</option>
+                        <option value="media">Média (100-1000 colaboradores)</option>
+                        <option value="grande">Grande (1000-10000 colaboradores)</option>
+                        <option value="multinacional">Multinacional (> 10000 colaboradores)</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Principais Desafios de Dados</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="qualidade" class="rounded">
+                            <span class="text-sm">Qualidade dos Dados</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="silos" class="rounded">
+                            <span class="text-sm">Silos de Dados</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="compliance" class="rounded">
+                            <span class="text-sm">Compliance/RGPD</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="acesso" class="rounded">
+                            <span class="text-sm">Acesso aos Dados</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="seguranca" class="rounded">
+                            <span class="text-sm">Segurança</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="desafios" value="analytics" class="rounded">
+                            <span class="text-sm">Analytics/BI</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Maturidade Atual em Gestão de Dados</label>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="maturidade" value="iniciante" class="text-blue-500">
+                            <span class="text-sm">Iniciante (ad-hoc)</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="maturidade" value="desenvolvimento" class="text-blue-500">
+                            <span class="text-sm">Em Desenvolvimento</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="maturidade" value="intermedio" class="text-blue-500">
+                            <span class="text-sm">Intermédio</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="maturidade" value="avancado" class="text-blue-500">
+                            <span class="text-sm">Avançado</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="nextStep()" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold">
+                    Próximo: Alinhamento Estratégico →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Alinhamento Estratégico -->
+        <div id="step2" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                🔗 Passo 2: Alinhamento Estratégico
+            </h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Objetivos Estratégicos da Organização</label>
+                    <textarea id="objetivos" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-24" 
+                              placeholder="Descreva os principais objetivos estratégicos da organização (ex: transformação digital, expansão internacional, melhoria da experiência do cliente...)"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Como a Gestão de Dados Suporta estes Objetivos</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="alignment-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">📊 Decisões Baseadas em Dados</h4>
+                            <textarea id="decisoes" class="w-full p-2 text-gray-800 border-none rounded h-20" 
+                                      placeholder="Como dados de qualidade melhorarão as decisões..."></textarea>
+                        </div>
+                        <div class="alignment-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">🚀 Inovação e Competitividade</h4>
+                            <textarea id="inovacao" class="w-full p-2 text-gray-800 border-none rounded h-20" 
+                                      placeholder="Como dados impulsionarão a inovação..."></textarea>
+                        </div>
+                        <div class="alignment-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">⚡ Eficiência Operacional</h4>
+                            <textarea id="eficiencia" class="w-full p-2 text-gray-800 border-none rounded h-20" 
+                                      placeholder="Como dados otimizarão processos..."></textarea>
+                        </div>
+                        <div class="alignment-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">🛡️ Gestão de Riscos</h4>
+                            <textarea id="riscos" class="w-full p-2 text-gray-800 border-none rounded h-20" 
+                                      placeholder="Como dados reduzirão riscos..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Prioridades de Capacidades DG</label>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="qualidade" class="rounded">
+                            <span class="text-sm">Melhoria da Qualidade de Dados</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="catalogacao" class="rounded">
+                            <span class="text-sm">Catalogação e Descoberta</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="privacidade" class="rounded">
+                            <span class="text-sm">Privacidade e Proteção</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="integracao" class="rounded">
+                            <span class="text-sm">Integração de Dados</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="analytics" class="rounded">
+                            <span class="text-sm">Analytics Avançado</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="capacidades" value="governacao" class="rounded">
+                            <span class="text-sm">Estruturas de Governação</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button onclick="prevStep()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-semibold">
+                    ← Anterior
+                </button>
+                <button onclick="nextStep()" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold">
+                    Próximo: Proposta de Valor →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Proposta de Valor -->
+        <div id="step3" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                💰 Passo 3: Proposta de Valor
+            </h2>
+            
+            <div class="space-y-6">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="value-card text-white p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">💵 Redução de Custos</h4>
+                        <div class="space-y-2">
+                            <input type="number" id="reducao-custos" class="w-full p-2 text-gray-800 rounded" placeholder="€ valor anual">
+                            <textarea id="desc-custos" class="w-full p-2 text-gray-800 rounded h-16" 
+                                      placeholder="Descreva como (ex: redução de trabalho manual, menos retrabalho...)"></textarea>
+                        </div>
+                    </div>
+                    <div class="value-card text-white p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">📈 Aumento de Receitas</h4>
+                        <div class="space-y-2">
+                            <input type="number" id="aumento-receitas" class="w-full p-2 text-gray-800 rounded" placeholder="€ valor anual">
+                            <textarea id="desc-receitas" class="w-full p-2 text-gray-800 rounded h-16" 
+                                      placeholder="Descreva como (ex: novos produtos data-driven, melhor targeting...)"></textarea>
+                        </div>
+                    </div>
+                    <div class="value-card text-white p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">⚡ Melhoria de Eficiência</h4>
+                        <div class="space-y-2">
+                            <input type="number" id="melhoria-eficiencia" class="w-full p-2 text-gray-800 rounded" placeholder="% melhoria">
+                            <textarea id="desc-eficiencia" class="w-full p-2 text-gray-800 rounded h-16" 
+                                      placeholder="Descreva como (ex: tempo de análise reduzido, decisões mais rápidas...)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Métricas de Sucesso (KPIs)</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="metric-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">📊 Métricas Quantitativas</h4>
+                            <div class="space-y-2">
+                                <div class="flex space-x-2">
+                                    <input type="text" class="flex-1 p-2 text-gray-800 rounded" placeholder="Nome da métrica">
+                                    <input type="text" class="w-24 p-2 text-gray-800 rounded" placeholder="Meta">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <input type="text" class="flex-1 p-2 text-gray-800 rounded" placeholder="Nome da métrica">
+                                    <input type="text" class="w-24 p-2 text-gray-800 rounded" placeholder="Meta">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <input type="text" class="flex-1 p-2 text-gray-800 rounded" placeholder="Nome da métrica">
+                                    <input type="text" class="w-24 p-2 text-gray-800 rounded" placeholder="Meta">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metric-card text-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">🎯 Métricas Qualitativas</h4>
+                            <div class="space-y-2">
+                                <input type="text" class="w-full p-2 text-gray-800 rounded" placeholder="Satisfação dos utilizadores">
+                                <input type="text" class="w-full p-2 text-gray-800 rounded" placeholder="Confiança nos dados">
+                                <input type="text" class="w-full p-2 text-gray-800 rounded" placeholder="Cultura data-driven">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Investimento Necessário</label>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-600">Tecnologia</label>
+                            <input type="number" id="inv-tecnologia" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="€">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600">Recursos Humanos</label>
+                            <input type="number" id="inv-rh" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="€">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600">Formação</label>
+                            <input type="number" id="inv-formacao" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="€">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button onclick="prevStep()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-semibold">
+                    ← Anterior
+                </button>
+                <button onclick="nextStep()" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold">
+                    Próximo: Requisitos Estratégicos →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Requisitos Estratégicos -->
+        <div id="step4" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                📋 Passo 4: Requisitos Estratégicos
+            </h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Requisitos de Compliance e Regulamentação</label>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="rgpd" class="rounded">
+                            <span class="text-sm">RGPD / GDPR</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="sox" class="rounded">
+                            <span class="text-sm">Sarbanes-Oxley</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="basel" class="rounded">
+                            <span class="text-sm">Basel III (Banca)</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="hipaa" class="rounded">
+                            <span class="text-sm">HIPAA (Saúde)</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="iso27001" class="rounded">
+                            <span class="text-sm">ISO 27001</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="compliance" value="dora" class="rounded">
+                            <span class="text-sm">DORA (Resilience Operacional)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Arquitetura e Infraestrutura</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-600">Ambientes de Dados</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="ambientes" value="cloud" class="rounded">
+                                    <span class="text-sm">Cloud (AWS/Azure/GCP)</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="ambientes" value="onpremise" class="rounded">
+                                    <span class="text-sm">On-Premise</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="ambientes" value="hibrido" class="rounded">
+                                    <span class="text-sm">Híbrido</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600">Tecnologias Prioritárias</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="tecnologias" value="datalake" class="rounded">
+                                    <span class="text-sm">Data Lake</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="tecnologias" value="datawarehouse" class="rounded">
+                                    <span class="text-sm">Data Warehouse</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="tecnologias" value="mdm" class="rounded">
+                                    <span class="text-sm">Master Data Management</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="tecnologias" value="dataquality" class="rounded">
+                                    <span class="text-sm">Ferramentas Qualidade Dados</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Estrutura Organizacional</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-600">Roles Necessários</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="roles" value="cdo" class="rounded">
+                                    <span class="text-sm">Chief Data Officer</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="roles" value="datasteward" class="rounded">
+                                    <span class="text-sm">Data Stewards</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="roles" value="dataarchitect" class="rounded">
+                                    <span class="text-sm">Data Architect</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="roles" value="dataanalyst" class="rounded">
+                                    <span class="text-sm">Data Analysts</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600">Comités e Governação</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="comites" value="steering" class="rounded">
+                                    <span class="text-sm">Comité Executivo DG</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="comites" value="operational" class="rounded">
+                                    <span class="text-sm">Comité Operacional</span>
+                                </label>
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" name="comites" value="quality" class="rounded">
+                                    <span class="text-sm">Comité Qualidade Dados</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Políticas e Procedimentos</label>
+                    <textarea id="politicas" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-24" 
+                              placeholder="Descreva as principais políticas de dados necessárias (retenção, acesso, classificação, etc.)"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button onclick="prevStep()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-semibold">
+                    ← Anterior
+                </button>
+                <button onclick="nextStep()" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold">
+                    Próximo: Plano de Ação →
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Plano de Ação -->
+        <div id="step5" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                🚀 Passo 5: Plano de Ação
+            </h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Roadmap de Implementação</label>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="border-2 border-green-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-green-800 mb-2">🎯 Curto Prazo (0-6 meses)</h4>
+                            <textarea id="curto-prazo" class="w-full p-2 border border-gray-300 rounded h-32" 
+                                      placeholder="Ex: Definir governação inicial, Quick wins, Formação básica..."></textarea>
+                        </div>
+                        <div class="border-2 border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-yellow-800 mb-2">📈 Médio Prazo (6-18 meses)</h4>
+                            <textarea id="medio-prazo" class="w-full p-2 border border-gray-300 rounded h-32" 
+                                      placeholder="Ex: Implementar ferramentas, Expandir equipa, Processos..."></textarea>
+                        </div>
+                        <div class="border-2 border-blue-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-blue-800 mb-2">🌟 Longo Prazo (18+ meses)</h4>
+                            <textarea id="longo-prazo" class="w-full p-2 border border-gray-300 rounded h-32" 
+                                      placeholder="Ex: Maturidade avançada, AI/ML, Cultura data-driven..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Fatores Críticos de Sucesso</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <textarea id="fatores-sucesso" class="w-full p-3 border border-gray-300 rounded-lg h-24" 
+                                      placeholder="Liste os fatores críticos para o sucesso (ex: apoio executivo, recursos adequados...)"></textarea>
+                        </div>
+                        <div>
+                            <textarea id="riscos-mitigacao" class="w-full p-3 border border-gray-300 rounded-lg h-24" 
+                                      placeholder="Principais riscos e estratégias de mitigação..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Comunicação e Change Management</label>
+                    <textarea id="comunicacao" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-24" 
+                              placeholder="Estratégia de comunicação e gestão da mudança para garantir adoção..."></textarea>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button onclick="prevStep()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-semibold">
+                    ← Anterior
+                </button>
+                <button onclick="generateStrategy()" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 font-semibold">
+                    🎯 Gerar Estratégia Completa
+                </button>
+            </div>
+        </div>
+
+        <!-- Strategy Summary -->
+        <div id="strategySummary" class="bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                📋 Estratégia PGDS Completa
+            </h2>
+            <div id="strategyContent" class="space-y-6">
+                <!-- Content will be generated dynamically -->
+            </div>
+            
+            <div class="mt-8 flex gap-4">
+                <button onclick="exportStrategy()" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-semibold">
+                    📄 Exportar PDF
+                </button>
+                <button onclick="exportCSV()" class="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 font-semibold">
+                    📊 Exportar CSV
+                </button>
+                <button onclick="resetForm()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-semibold">
+                    🔄 Nova Estratégia
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let completedSteps = new Set();
+
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`step${i}`).classList.add('hidden');
+                document.getElementById(`step${i}`).classList.remove('active');
+                document.getElementById(`btn${i}`).className = "px-4 py-2 rounded-lg bg-gray-300 text-gray-700";
+            }
+            
+            // Show current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            document.getElementById(`step${step}`).classList.add('active', 'fade-in');
+            document.getElementById(`btn${step}`).className = "px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold";
+            
+            currentStep = step;
+            updateProgress();
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                completedSteps.add(currentStep);
+                if (currentStep < 5) {
+                    showStep(currentStep + 1);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function validateCurrentStep() {
+            // Basic validation - can be enhanced
+            switch(currentStep) {
+                case 1:
+                    return document.getElementById('setor').value && 
+                           document.getElementById('dimensao').value &&
+                           document.querySelector('input[name="maturidade"]:checked');
+                case 2:
+                    return document.getElementById('objetivos').value.trim();
+                case 3:
+                    return document.getElementById('reducao-custos').value || 
+                           document.getElementById('aumento-receitas').value ||
+                           document.getElementById('melhoria-eficiencia').value;
+                case 4:
+                    return true; // Optional step
+                case 5:
+                    return document.getElementById('curto-prazo').value.trim();
+                default:
+                    return true;
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedSteps.size / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Progresso: ${completedSteps.size} de 5 secções concluídas`;
+        }
+
+        function generateStrategy() {
+            if (validateCurrentStep()) {
+                completedSteps.add(5);
+                updateProgress();
+                
+                const strategy = buildStrategyObject();
+                displayStrategy(strategy);
+                
+                // Hide all steps and show summary
+                for (let i = 1; i <= 5; i++) {
+                    document.getElementById(`step${i}`).classList.add('hidden');
+                }
+                document.getElementById('strategySummary').classList.remove('hidden');
+            }
+        }
+
+        function buildStrategyObject() {
+            // Gather all form data
+            const desafios = Array.from(document.querySelectorAll('input[name="desafios"]:checked')).map(cb => cb.value);
+            const capacidades = Array.from(document.querySelectorAll('input[name="capacidades"]:checked')).map(cb => cb.value);
+            const compliance = Array.from(document.querySelectorAll('input[name="compliance"]:checked')).map(cb => cb.value);
+            const ambientes = Array.from(document.querySelectorAll('input[name="ambientes"]:checked')).map(cb => cb.value);
+            const tecnologias = Array.from(document.querySelectorAll('input[name="tecnologias"]:checked')).map(cb => cb.value);
+            const roles = Array.from(document.querySelectorAll('input[name="roles"]:checked')).map(cb => cb.value);
+            const comites = Array.from(document.querySelectorAll('input[name="comites"]:checked')).map(cb => cb.value);
+
+            return {
+                contexto: {
+                    setor: document.getElementById('setor').value,
+                    dimensao: document.getElementById('dimensao').value,
+                    desafios: desafios,
+                    maturidade: document.querySelector('input[name="maturidade"]:checked')?.value
+                },
+                alinhamento: {
+                    objetivos: document.getElementById('objetivos').value,
+                    decisoes: document.getElementById('decisoes').value,
+                    inovacao: document.getElementById('inovacao').value,
+                    eficiencia: document.getElementById('eficiencia').value,
+                    riscos: document.getElementById('riscos').value,
+                    capacidades: capacidades
+                },
+                valor: {
+                    reducaoCustos: document.getElementById('reducao-custos').value,
+                    descCustos: document.getElementById('desc-custos').value,
+                    aumentoReceitas: document.getElementById('aumento-receitas').value,
+                    descReceitas: document.getElementById('desc-receitas').value,
+                    melhoriaEficiencia: document.getElementById('melhoria-eficiencia').value,
+                    descEficiencia: document.getElementById('desc-eficiencia').value,
+                    investimento: {
+                        tecnologia: document.getElementById('inv-tecnologia').value,
+                        rh: document.getElementById('inv-rh').value,
+                        formacao: document.getElementById('inv-formacao').value
+                    }
+                },
+                requisitos: {
+                    compliance: compliance,
+                    ambientes: ambientes,
+                    tecnologias: tecnologias,
+                    roles: roles,
+                    comites: comites,
+                    politicas: document.getElementById('politicas').value
+                },
+                plano: {
+                    curtoPrazo: document.getElementById('curto-prazo').value,
+                    medioPrazo: document.getElementById('medio-prazo').value,
+                    longoPrazo: document.getElementById('longo-prazo').value,
+                    fatoresSucesso: document.getElementById('fatores-sucesso').value,
+                    riscosMitigacao: document.getElementById('riscos-mitigacao').value,
+                    comunicacao: document.getElementById('comunicacao').value
+                }
+            };
+        }
+
+        function displayStrategy(strategy) {
+            const content = document.getElementById('strategyContent');
+            
+            const investimentoTotal = (parseFloat(strategy.valor.investimento.tecnologia) || 0) +
+                                    (parseFloat(strategy.valor.investimento.rh) || 0) +
+                                    (parseFloat(strategy.valor.investimento.formacao) || 0);
+            
+            const beneficioTotal = (parseFloat(strategy.valor.reducaoCustos) || 0) +
+                                 (parseFloat(strategy.valor.aumentoReceitas) || 0);
+
+            content.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">📊 Resumo Executivo</h3>
+                        <p><strong>Setor:</strong> ${getSetorLabel(strategy.contexto.setor)}</p>
+                        <p><strong>Dimensão:</strong> ${getDimensaoLabel(strategy.contexto.dimensao)}</p>
+                        <p><strong>Maturidade Atual:</strong> ${getMaturidadeLabel(strategy.contexto.maturidade)}</p>
+                        <p><strong>Principais Desafios:</strong> ${strategy.contexto.desafios.join(', ')}</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-800 mb-4">💰 Análise Financeira</h3>
+                        <p><strong>Investimento Total:</strong> €${investimentoTotal.toLocaleString()}</p>
+                        <p><strong>Benefício Estimado:</strong> €${beneficioTotal.toLocaleString()}/ano</p>
+                        <p><strong>ROI Estimado:</strong> ${investimentoTotal > 0 ? Math.round((beneficioTotal / investimentoTotal) * 100) : 0}%</p>
+                        <p><strong>Payback:</strong> ${beneficioTotal > 0 ? Math.round(investimentoTotal / beneficioTotal * 12) : 0} meses</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-purple-800 mb-4">🎯 Objetivos Estratégicos</h3>
+                    <p class="mb-4">${strategy.alinhamento.objetivos}</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold">Como a DG Suporta:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                ${strategy.alinhamento.decisoes ? '<li>Decisões: ' + strategy.alinhamento.decisoes + '</li>' : ''}
+                                ${strategy.alinhamento.inovacao ? '<li>Inovação: ' + strategy.alinhamento.inovacao + '</li>' : ''}
+                                ${strategy.alinhamento.eficiencia ? '<li>Eficiência: ' + strategy.alinhamento.eficiencia + '</li>' : ''}
+                                ${strategy.alinhamento.riscos ? '<li>Riscos: ' + strategy.alinhamento.riscos + '</li>' : ''}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Capacidades Prioritárias:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                ${strategy.alinhamento.capacidades.map(cap => '<li>' + getCapacidadeLabel(cap) + '</li>').join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-yellow-800 mb-4">📋 Requisitos Técnicos e Organizacionais</h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <h4 class="font-semibold">Compliance</h4>
+                            <ul class="list-disc list-inside text-sm">
+                                ${strategy.requisitos.compliance.map(comp => '<li>' + getComplianceLabel(comp) + '</li>').join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Tecnologias</h4>
+                            <ul class="list-disc list-inside text-sm">
+                                ${strategy.requisitos.tecnologias.map(tech => '<li>' + getTecnologiaLabel(tech) + '</li>').join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Organização</h4>
+                            <ul class="list-disc list-inside text-sm">
+                                ${strategy.requisitos.roles.map(role => '<li>' + getRoleLabel(role) + '</li>').join('')}
+                                ${strategy.requisitos.comites.map(com => '<li>' + getComiteLabel(com) + '</li>').join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-indigo-800 mb-4">🚀 Roadmap de Implementação</h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-green-700">Curto Prazo (0-6m)</h4>
+                            <p class="text-sm">${strategy.plano.curtoPrazo}</p>
+                        </div>
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <h4 class="font-semibold text-yellow-700">Médio Prazo (6-18m)</h4>
+                            <p class="text-sm">${strategy.plano.medioPrazo}</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-blue-700">Longo Prazo (18m+)</h4>
+                            <p class="text-sm">${strategy.plano.longoPrazo}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-red-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-red-800 mb-4">⚠️ Fatores Críticos e Riscos</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold">Fatores de Sucesso</h4>
+                            <p class="text-sm">${strategy.plano.fatoresSucesso}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Riscos e Mitigação</h4>
+                            <p class="text-sm">${strategy.plano.riscosMitigacao}</p>
+                        </div>
+                    </div>
+                </div>
+
+                ${strategy.plano.comunicacao ? `
+                <div class="bg-teal-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-teal-800 mb-4">📢 Comunicação e Change Management</h3>
+                    <p>${strategy.plano.comunicacao}</p>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        // Helper functions for labels
+        function getSetorLabel(value) {
+            const labels = {
+                'banca': 'Banca e Serviços Financeiros',
+                'saude': 'Saúde e Farmacêutica',
+                'telecom': 'Telecomunicações',
+                'retail': 'Retalho e E-commerce',
+                'governo': 'Setor Público/Governo',
+                'energia': 'Energia e Utilities',
+                'manufatura': 'Manufatura',
+                'educacao': 'Educação',
+                'tecnologia': 'Tecnologia',
+                'outro': 'Outro'
+            };
+            return labels[value] || value;
+        }
+
+        function getDimensaoLabel(value) {
+            const labels = {
+                'pequena': 'Pequena (< 100 colaboradores)',
+                'media': 'Média (100-1000 colaboradores)',
+                'grande': 'Grande (1000-10000 colaboradores)',
+                'multinacional': 'Multinacional (> 10000 colaboradores)'
+            };
+            return labels[value] || value;
+        }
+
+        function getMaturidadeLabel(value) {
+            const labels = {
+                'iniciante': 'Iniciante (ad-hoc)',
+                'desenvolvimento': 'Em Desenvolvimento',
+                'intermedio': 'Intermédio',
+                'avancado': 'Avançado'
+            };
+            return labels[value] || value;
+        }
+
+        function getCapacidadeLabel(value) {
+            const labels = {
+                'qualidade': 'Melhoria da Qualidade de Dados',
+                'catalogacao': 'Catalogação e Descoberta',
+                'privacidade': 'Privacidade e Proteção',
+                'integracao': 'Integração de Dados',
+                'analytics': 'Analytics Avançado',
+                'governacao': 'Estruturas de Governação'
+            };
+            return labels[value] || value;
+        }
+
+        function getComplianceLabel(value) {
+            const labels = {
+                'rgpd': 'RGPD / GDPR',
+                'sox': 'Sarbanes-Oxley',
+                'basel': 'Basel III',
+                'hipaa': 'HIPAA',
+                'iso27001': 'ISO 27001',
+                'dora': 'DORA'
+            };
+            return labels[value] || value;
+        }
+
+        function getTecnologiaLabel(value) {
+            const labels = {
+                'datalake': 'Data Lake',
+                'datawarehouse': 'Data Warehouse',
+                'mdm': 'Master Data Management',
+                'dataquality': 'Ferramentas Qualidade Dados'
+            };
+            return labels[value] || value;
+        }
+
+        function getRoleLabel(value) {
+            const labels = {
+                'cdo': 'Chief Data Officer',
+                'datasteward': 'Data Stewards',
+                'dataarchitect': 'Data Architect',
+                'dataanalyst': 'Data Analysts'
+            };
+            return labels[value] || value;
+        }
+
+        function getComiteLabel(value) {
+            const labels = {
+                'steering': 'Comité Executivo DG',
+                'operational': 'Comité Operacional',
+                'quality': 'Comité Qualidade Dados'
+            };
+            return labels[value] || value;
+        }
+
+        function exportCSV() {
+            const strategy = buildStrategyObject();
+            
+            let csv = '\ufeff'; // BOM for UTF-8
+            csv += 'Secção,Campo,Valor\n';
+            
+            // Add all data to CSV
+            csv += `Contexto,Setor,${strategy.contexto.setor}\n`;
+            csv += `Contexto,Dimensão,${strategy.contexto.dimensao}\n`;
+            csv += `Contexto,Maturidade,${strategy.contexto.maturidade}\n`;
+            csv += `Contexto,Desafios,"${strategy.contexto.desafios.join('; ')}"\n`;
+            
+            csv += `Alinhamento,Objetivos Estratégicos,"${strategy.alinhamento.objetivos.replace(/"/g, '""')}"\n`;
+            csv += `Alinhamento,Capacidades Prioritárias,"${strategy.alinhamento.capacidades.join('; ')}"\n`;
+            
+            csv += `Valor,Redução de Custos,€${strategy.valor.reducaoCustos}\n`;
+            csv += `Valor,Aumento de Receitas,€${strategy.valor.aumentoReceitas}\n`;
+            csv += `Valor,Investimento Tecnologia,€${strategy.valor.investimento.tecnologia}\n`;
+            csv += `Valor,Investimento RH,€${strategy.valor.investimento.rh}\n`;
+            csv += `Valor,Investimento Formação,€${strategy.valor.investimento.formacao}\n`;
+            
+            csv += `Requisitos,Compliance,"${strategy.requisitos.compliance.join('; ')}"\n`;
+            csv += `Requisitos,Tecnologias,"${strategy.requisitos.tecnologias.join('; ')}"\n`;
+            csv += `Requisitos,Roles,"${strategy.requisitos.roles.join('; ')}"\n`;
+            
+            csv += `Plano,Curto Prazo,"${strategy.plano.curtoPrazo.replace(/"/g, '""')}"\n`;
+            csv += `Plano,Médio Prazo,"${strategy.plano.medioPrazo.replace(/"/g, '""')}"\n`;
+            csv += `Plano,Longo Prazo,"${strategy.plano.longoPrazo.replace(/"/g, '""')}"\n`;
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'estrategia-pgds.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportStrategy() {
+            window.print();
+        }
+
+        function resetForm() {
+            if (confirm('Tem a certeza que pretende reiniciar? Todos os dados serão perdidos.')) {
+                location.reload();
+            }
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
